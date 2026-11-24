@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silêncio é Saúde | Impacto do Ruído Excessivo</title>
+    <!-- Importação da fonte Inter do Google Fonts para melhor tipografia -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           VARIÁVEIS E CONFIGURAÇÕES GLOBAIS (CSS PURO)
+           ========================================================================== */
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-dark: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-light: #f8fafc;
+            
+            /* Paleta de Cores Temática (Saúde & Alerta Sonoro) */
+            --accent-blue: #0284c7;
+            --accent-blue-light: #e0f2fe;
+            --safe-green: #10b981;
+            --safe-green-bg: #d1fae5;
+            --warn-amber: #f59e0b;
+            --warn-amber-bg: #fef3c7;
+            --danger-red: #ef4444;
+            --danger-red-bg: #fee2e2;
+            
+            /* Sombras e Bordas */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s ease;
+        }
+
+        /* Suporte automático ao modo escuro do sistema */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0b1120;
+                --bg-secondary: #1e293b;
+                --text-main: #f1f5f9;
+                --text-muted: #94a3b8;
+                --accent-blue: #38bdf8;
+                --accent-blue-light: rgba(56, 189, 248, 0.15);
+                --safe-green-bg: rgba(16, 185, 129, 0.15);
+                --warn-amber-bg: rgba(245, 158, 11, 0.15);
+                --danger-red-bg: rgba(239, 68, 68, 0.15);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           CABEÇALHO E NAVEGAÇÃO
+           ========================================================================== */
+        header {
+            background-color: var(--bg-secondary);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 800;
+            font-size: 1.35rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue);
+        }
+
+        /* ==========================================================================
+           SEÇÃO HERO (BANNER PRINCIPAL)
+           ========================================================================== */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: var(--text-light);
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(56, 189, 248, 0.2);
+            color: #7dd3fc;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+            border: 1px solid rgba(125, 211, 252, 0.3);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 4vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: #0284c7;
+            color: #ffffff;
+            padding: 0.9rem 1.8rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background-color: #0369a1;
+            transform: translateY(-2px);
+        }
+
+        /* Animação decorativa de ondas sonoras em CSS puro */
+        .soundwave-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+        }
+
+        .bar {
+            width: 10px;
+            background: linear-gradient(to top, #38bdf8, #818cf8);
+            border-radius: 10px;
+            animation: equalize 1.2s ease-in-out infinite;
+        }
+
+        .bar:nth-child(1) { height: 40px; animation-delay: 0.1s; }
+        .bar:nth-child(2) { height: 90px; animation-delay: 0.3s; }
+        .bar:nth-child(3) { height: 150px; animation-delay: 0.5s; background: linear-gradient(to top, #f59e0b, #ef4444); }
+        .bar:nth-child(4) { height: 110px; animation-delay: 0.2s; }
+        .bar:nth-child(5) { height: 170px; animation-delay: 0.4s; background: linear-gradient(to top, #f59e0b, #ef4444); }
+        .bar:nth-child(6) { height: 80px; animation-delay: 0.6s; }
+        .bar:nth-child(7) { height: 130px; animation-delay: 0.15s; }
+        .bar:nth-child(8) { height: 50px; animation-delay: 0.35s; }
+
+        @keyframes equalize {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.15); }
+        }
+
+        /* ==========================================================================
+           ESTILOS GERAIS DE SEÇÃO
+           ========================================================================== */
+        section {
+            padding: 4.5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 3.5rem auto;
+        }
+
+        .section-header h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* ==========================================================================
+           SEÇÃO 1: IMPACTO NA SAÚDE FÍSICA E MENTAL
+           ========================================================================== */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+        }
+
+        .icon-physical {
+            background-color: var(--danger-red-bg);
+            color: var(--danger-red);
+        }
+
+        .icon-mental {
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .symptom-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .symptom-list li {
+            position: relative;
+            padding-left: 1.6rem;
+            color: var(--text-muted);
+        }
+
+        .symptom-list li strong {
+            color: var(--text-main);
+        }
+
+        .symptom-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: 900;
+            font-size: 1.4rem;
+            line-height: 1.1;
+        }
+
+        /* ==========================================================================
+           SEÇÃO 2: TERMÔMETRO DE DECIBÉIS E LIMITES DA OMS
+           ========================================================================== */
+        .oms-section {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid rgba(148, 163, 184, 0.15);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .db-meter {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .db-row {
+            background-color: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            display: grid;
+            grid-template-columns: 110px 1fr auto;
+            align-items: center;
+            gap: 1.5rem;
+            border-left: 6px solid transparent;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .db-safe { border-left-color: var(--safe-green); }
+        .db-warn { border-left-color: var(--warn-amber); }
+        .db-danger { border-left-color: var(--danger-red); }
+
+        .db-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .db-safe .db-value { color: var(--safe-green); }
+        .db-warn .db-value { color: var(--warn-amber); }
+        .db-danger .db-value { color: var(--danger-red); }
+
+        .db-info h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .db-info p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .db-tag {
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tag-safe { background: var(--safe-green-bg); color: var(--safe-green); }
+        .tag-warn { background: var(--warn-amber-bg); color: var(--warn-amber); }
+        .tag-danger { background: var(--danger-red-bg); color: var(--danger-red); }
+
+        /* ==========================================================================
+           SEÇÃO 3: LEGISLAÇÃO BRASILEIRA (NR-15 E NBR 10151)
+           ========================================================================== */
+        .law-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .law-badge {
+            display: inline-block;
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue);
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        th {
+            background-color: rgba(2, 132, 199, 0.08);
+            font-weight: 700;
+            color: var(--accent-blue);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ==========================================================================
+           SEÇÃO 4: USO CORRETO DE FONES DE OUVIDO (REGRA 60/60)
+           ========================================================================== */
+        .headphones-section {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.06) 0%, rgba(16, 185, 129, 0.06) 100%);
+            border-top: 1px solid rgba(148, 163, 184, 0.15);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .rule-60-box {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2.5rem;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border: 2px solid var(--accent-blue);
+        }
+
+        .rule-highlight {
+            text-align: center;
+            background: var(--accent-blue-light);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+        }
+
+        .rule-highlight span {
+            display: block;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tip-item {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tip-item h4 {
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* ==========================================================================
+           SEÇÃO 5: MATERIAIS DE PROTEÇÃO (PROTETORES AURICULARES)
+           ========================================================================== */
+        .ppe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .ppe-card {
+            background-color: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ppe-header {
+            padding: 1.5rem;
+            background-color: rgba(2, 132, 199, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ppe-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .nrr-badge {
+            margin-top: 1.25rem;
+            padding: 0.6rem 1rem;
+            background-color: var(--safe-green-bg);
+            color: var(--safe-green);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        /* ==========================================================================
+           RODAPÉ
+           ========================================================================== */
+        footer {
+            background-color: var(--bg-dark);
+            color: #94a3b8;
+            padding: 3rem 0;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        footer strong {
+            color: #f8fafc;
+        }
+
+        /* ==========================================================================
+           RESPONSIVIDADE (MOBILE E TABLET)
+           ========================================================================== */
+        @media (max-width: 860px) {
+            .hero-grid, .rule-60-box {
+                grid-template-columns: 1fr;
+            }
+
+            .soundwave-box {
+                height: 150px;
+            }
+
+            .db-row {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .db-tag {
+                justify-self: start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho Fixo -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <!-- Ícone SVG de Onda Sonora / Ouvido -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 10v3"/>
+                    <path d="M6 6v11"/>
+                    <path d="M10 3v18"/>
+                    <path d="M14 8v7"/>
+                    <path d="M18 5v13"/>
+                    <path d="M22 10v3"/>
+                </svg>
+                <span>BioAcústica & Saúde</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#saude">Saúde Física & Mental</a></li>
+                    <li><a href="#oms">Limites OMS</a></li>
+                    <li><a href="#legislacao">Legislação</a></li>
+                    <li><a href="#fones">Fones de Ouvido</a></li>
+                    <li><a href="#protetores">Protetores</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Seção Principal (Hero) -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <span class="badge">Poluição Sonora & Prevenção</span>
+                <h1>O Ruído Invisível que Afeta Seu Corpo e Sua Mente</h1>
+                <p>A exposição contínua a sons elevados vai muito além da perda auditiva: desencadeia estresse crônico, distúrbios cardiovasculares e esgotamento mental. Descubra como medir, prevenir e se proteger.</p>
+                <a href="#oms" class="btn-primary">Conhecer os Limites Seguros</a>
+            </div>
+            <div class="soundwave-box" aria-hidden="true">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção 1: Impacto na Saúde Física e Mental -->
+    <section id="saude">
+        <div class="container">
+            <div class="section-header">
+                <h2>Impacto do Ruído na Saúde Física e Mental</h2>
+                <p>O sistema auditivo nunca "desliga", mesmo durante o sono. O cérebro interpreta sons intensos como sinais de perigo, ativando respostas biológicas de alerta.</p>
+            </div>
+
+            <div class="health-grid">
+                <!-- Card Saúde Física -->
+                <div class="card">
+                    <div class="card-icon icon-physical">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    </div>
+                    <h3>Consequências na Saúde Física</h3>
+                    <ul class="symptom-list">
+                        <li><strong>PAIR (Perda Auditiva Induzida por Ruído):</strong> Dano irreversível às células ciliadas da cóclea no ouvido interno.</li>
+                        <li><strong>Zumbido Crônico (Tinnitus):</strong> Percepção constante de apitos ou chiados mesmo em ambientes silenciosos.</li>
+                        <li><strong>Riscos Cardiovasculares:</strong> Aumento da pressão arterial, taquicardia e maior risco de infarto devido à liberação contínua de adrenalina.</li>
+                        <li><strong>Distúrbios Metabólicos e Gastrointestinais:</strong> Alterações na digestão e redução da resposta imunológica.</li>
+                    </ul>
+                </div>
+
+                <!-- Card Saúde Mental -->
+                <div class="card">
+                    <div class="card-icon icon-mental">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 16v-4"/>
+                            <path d="M12 8h.01"/>
+                        </svg>
+                    </div>
+                    <h3>Consequências na Saúde Mental</h3>
+                    <ul class="symptom-list">
+                        <li><strong>Estresse Crônico e Cortisol:</strong> O ruído eleva os níveis de cortisol no sangue, gerando tensão muscular e irritabilidade constante.</li>
+                        <li><strong>Fragmentação do Sono:</strong> Mesmo sem acordar totalmente, barulhos noturnos impedem o sono profundo (REM), causando fadiga diurna.</li>
+                        <li><strong>Déficit Cognitivo e de Atenção:</strong> Queda na capacidade de concentração, memória de curto prazo e produtividade intelectual.</li>
+                        <li><strong>Ansiedade e Burnout:</strong> Sobrecarga sensorial que agrava quadros de ansiedade, fadiga mental e esgotamento emocional.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção 2: Limites Toleráveis pela OMS -->
+    <section id="oms" class="oms-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Limites Toleráveis de Decibéis pela OMS</h2>
+                <p>A Organização Mundial da Saúde (OMS) estabelece que o limite seguro para a audição humana sem risco de danos é de até <strong>55 dB</strong> para conforto acústico e no máximo <strong>85 dB por até 8 horas</strong>.</p>
+            </div>
+
+            <div class="db-meter">
+                <!-- Nível Seguro 1 -->
+                <div class="db-row db-safe">
+                    <div class="db-value">30 - 40 dB</div>
+                    <div class="db-info">
+                        <h4>Sussurro, Biblioteca ou Quarto Silencioso</h4>
+                        <p>Ideal para descanso, sono reparador (recomendado abaixo de 30 dB à noite) e concentração profunda.</p>
+                    </div>
+                    <span class="db-tag tag-safe">Totalmente Seguro</span>
+                </div>
+
+                <!-- Nível Seguro 2 -->
+                <div class="db-row db-safe">
+                    <div class="db-value">50 - 60 dB</div>
+                    <div class="db-info">
+                        <h4>Conversa Normal ou Escritório Tranquilo</h4>
+                        <p>Limite máximo recomendado pela OMS (55 dB) para ambientes urbanos diurnos sem gerar estresse auditivo.</p>
+                    </div>
+                    <span class="db-tag tag-safe">Conforto Acústico</span>
+                </div>
+
+                <!-- Nível Alerta -->
+                <div class="db-row db-warn">
+                    <div class="db-value">75 - 85 dB</div>
+                    <div class="db-info">
+                        <h4>Trânsito Intenso, Aspirador de Pó ou Restaurante Cheio</h4>
+                        <p>85 dB é o limiar crítico. A exposição acima de 8 horas diárias começa a provocar lesões auditivas permanentes.</p>
+                    </div>
+                    <span class="db-tag tag-warn">Limiar de Risco</span>
+                </div>
+
+                <!-- Nível Perigo 1 -->
+                <div class="db-row db-danger">
+                    <div class="db-value">95 - 105 dB</div>
+                    <div class="db-info">
+                        <h4>Fones no Volume Máximo, Motocicletas ou Shows</h4>
+                        <p>Dano rápido: a 100 dB, o tempo seguro de exposição cai para apenas <strong>15 minutos</strong> sem proteção.</p>
+                    </div>
+                    <span class="db-tag tag-danger">Alto Risco (15 min)</span>
+                </div>
+
+                <!-- Nível Perigo 2 -->
+                <div class="db-row db-danger">
+                    <div class="db-value">120+ dB</div>
+                    <div class="db-info">
+                        <h4>Sirenes, Fogos de Artifício ou Turbina de Avião</h4>
+                        <p>Limiar da dor física. Pode causar trauma acústico imediato, ruptura do tímpano e surdez súbita.</p>
+                    </div>
+                    <span class="db-tag tag-danger">Perigo Imediato</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção 3: Legislação Brasileira -->
+    <section id="legislacao">
+        <div class="container">
+            <div class="section-header">
+                <h2>Legislação e Normas Técnicas no Brasil</h2>
+                <p>No Brasil, o controle de ruído é regulamentado tanto na esfera trabalhista quanto na convivência urbana e ambiental.</p>
+            </div>
+
+            <div class="law-grid">
+                <div class="card">
+                    <span class="law-badge">Saúde Ocupacional</span>
+                    <h3>NR-15 (Anexo 1) - Ministério do Trabalho</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        Estabelece os limites de tolerância para ruído contínuo ou intermitente no ambiente de trabalho. Acima desses limites, a empresa é obrigada a adotar medidas de controle coletivo e fornecer Equipamentos de Proteção Individual (EPIs) com Certificado de Aprovação (CA).
+                    </p>
+                </div>
+
+                <div class="card">
+                    <span class="law-badge">Conforto Urbano</span>
+                    <h3>ABNT NBR 10151 & Lei das Contravenções</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        A <strong>NBR 10151</strong> fixa limites para áreas habitadas (geralmente 50 a 55 dB de dia e 45 a 50 dB à noite em zonas residenciais). Além disso, o Art. 42 da Lei de Contravenções Penais proíbe a perturbação do sossego alheio em qualquer horário.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tabela Progressiva da NR-15 -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nível de Ruído (dB)</th>
+                            <th>Máxima Exposição Diária Permissível (NR-15)</th>
+                            <th>Observação de Segurança</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>85 dB</strong></td>
+                            <td>8 horas</td>
+                            <td>Limite padrão para jornada integral sem proteção</td>
+                        </tr>
+                        <tr>
+                            <td><strong>90 dB</strong></td>
+                            <td>4 horas</td>
+                            <td>A cada +5 dB, o tempo permitido cai pela metade</td>
+                        </tr>
+                        <tr>
+                            <td><strong>95 dB</strong></td>
+                            <td>2 horas</td>
+                            <td>Uso obrigatório de protetor auricular</td>
+                        </tr>
+                        <tr>
+                            <td><strong>100 dB</strong></td>
+                            <td>1 hora</td>
+                            <td>Risco severo de PAIR sem atenuação adequada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>115 dB</strong></td>
+                            <td>7 minutos</td>
+                            <td>Exposição proibida sem proteção auditiva dupla/especial</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção 4: Uso Correto de Fones de Ouvido -->
+    <section id="fones" class="headphones-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Uso Seguro de Fones de Ouvido</h2>
+                <p>Mais de 1 bilhão de jovens no mundo correm risco de perda auditiva devido ao uso inadequado de dispositivos de áudio pessoais.</p>
+            </div>
+
+            <!-- Destaque Regra 60/60 -->
+            <div class="rule-60-box">
+                <div class="rule-highlight">
+                    <span>60 / 60</span>
+                    <strong>A Regra de Ouro da Audição</strong>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">Como aplicar a Regra 60/60 no dia a dia</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        Especialistas em otorrinolaringologia recomendam ouvir músicas, vídeos ou jogos utilizando no máximo <strong>60% do volume total</strong> do aparelho por um período contínuo de até <strong>60 minutos</strong>. Após uma hora, faça uma pausa de pelo menos 10 a 15 minutos para permitir que as células sensoriais do ouvido descansem.
+                    </p>
+                </div>
+            </div>
+
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <h4>1. Prefira Fones Supra-auriculares (Over-Ear)</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Fones que cobrem toda a orelha ficam mais distantes do tímpano do que os modelos intra-auriculares (in-ear), reduzindo a pressão sonora direta.</p>
+                </div>
+                <div class="tip-item">
+                    <h4>2. Use Cancelamento Ativo de Ruído (ANC)</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Em ônibus, aviões ou ruas movimentadas, o ANC bloqueia o barulho externo, evitando que você precise aumentar o volume para abafar o ambiente.</p>
+                </div>
+                <div class="tip-item">
+                    <h4>3. Nunca Durma com Fones</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Dormir ouvindo áudio mantém o ouvido sob estímulo contínuo por 6 a 8 horas seguidas, impedindo a recuperação metabólica auditiva.</p>
+                </div>
+                <div class="tip-item">
+                    <h4>4. Higiene e Não Compartilhamento</h4>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Limpe as ponteiras regularmente com álcool isopropílico e não compartilhe fones intra-auriculares para evitar infecções (otites) bacterianas ou fúngicas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção 5: Materiais de Proteção (Protetores Auriculares) -->
+    <section id="protetores">
+        <div class="container">
+            <div class="section-header">
+                <h2>Materiais e Tipos de Protetores Auriculares</h2>
+                <p>Quando não é possível eliminar o ruído na fonte, o uso de abafadores e protetores auriculares é a barreira essencial para preservar a audição.</p>
+            </div>
+
+            <div class="ppe-grid">
+                <!-- Tipo 1: Espuma Moldável -->
+                <div class="ppe-card">
+                    <div class="ppe-header">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2">
+                            <path d="M12 2a5 5 0 0 1 5 5v10a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"/>
+                        </svg>
+                        <h3>Plugue de Espuma Moldável</h3>
+                    </div>
+                    <div class="ppe-body">
+                        <div>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                                Fabricado em <strong>espuma de poliuretano</strong> de recuperação lenta. Deve ser comprimido entre os dedos antes de ser inserido no canal auditivo, onde se expande vedando completamente a passagem do som.
+                            </p>
+                            <p style="font-size: 0.9rem; color: var(--text-main);"><strong>Indicação:</strong> Dormir em locais barulhentos, estudos, viagens de avião e uso descartável.</p>
+                        </div>
+                        <span class="nrr-badge">Atenuação média: 25 a 33 dB</span>
+                    </div>
+                </div>
+
+                <!-- Tipo 2: Silicone Tipo Flange -->
+                <div class="ppe-card">
+                    <div class="ppe-header">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2">
+                            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                            <line x1="4" y1="22" x2="4" y2="15"/>
+                        </svg>
+                        <h3>Plugue de Silicone (Flanges)</h3>
+                    </div>
+                    <div class="ppe-body">
+                        <div>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                                Feito em <strong>silicone grau médico ou copolímero</strong> flexível com 2 ou 3 abas (flanges). É lavável, reutilizável e frequentemente possui cordão para evitar perdas.
+                            </p>
+                            <p style="font-size: 0.9rem; color: var(--text-main);"><strong>Indicação:</strong> Indústrias, oficinas, construção civil e ambientes úmidos (existem versões para natação).</p>
+                        </div>
+                        <span class="nrr-badge">Atenuação média: 15 a 25 dB</span>
+                    </div>
+                </div>
+
+                <!-- Tipo 3: Abafador Tipo Concha -->
+                <div class="ppe-card">
+                    <div class="ppe-header">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2">
+                            <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                        </svg>
+                        <h3>Abafador Tipo Concha (Circum-auricular)</h3>
+                    </div>
+                    <div class="ppe-body">
+                        <div>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                                Composto por conchas rígidas de <strong>plástico ABS</strong> revestidas internamente com espumas acústicas de alta densidade e almofadas externas de vedação em PVC/silicone.
+                            </p>
+                            <p style="font-size: 0.9rem; color: var(--text-main);"><strong>Indicação:</strong> Ruídos intensos (maquinário pesado, aeroportos, estandes de tiro) e pessoas com hipersensibilidade sensorial (TEA).</p>
+                        </div>
+                        <span class="nrr-badge">Atenuação média: 20 a 30 dB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <p><strong>BioAcústica & Saúde</strong> — Portal Informativo sobre Prevenção Auditiva e Qualidade de Vida.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Fontes de referência: Organização Mundial da Saúde (OMS), Norma Regulamentadora NR-15 (MTE) e ABNT NBR 10151.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
